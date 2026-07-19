@@ -1,0 +1,22 @@
+fastapi
+uvicorn[standard]
+
+# Database
+sqlalchemy
+psycopg2-binary
+
+# Configuration
+pydantic-settings
+python-dotenv
+
+# Validation
+email-validator
+
+# Azure OpenAI
+openai>=1.50.0
+
+# Azure SDK
+azure-storage-blob
+azure-servicebus
+azure-identity
+azure-keyvault-secrets
