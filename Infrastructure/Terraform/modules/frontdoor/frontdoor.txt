@@ -1,0 +1,13 @@
+Enterprise Azure AI Platform, Azure Front Door Premium should be the global entry point providing:
+
+Global Anycast routing
+Layer 7 load balancing
+Web Application Firewall (WAF)
+CDN
+SSL Offloading
+Origin Groups
+Health Probes
+Multi-region failover
+Private Link support to Application Gateway
+
+Note: For production, it's preferable to use the Application Gateway DNS name or a custom domain as the origin rather than its public IP. If you're using Private Link with Azure Front Door Premium, configure the origin accordingly
