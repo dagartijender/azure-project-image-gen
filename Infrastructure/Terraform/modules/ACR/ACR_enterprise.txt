@@ -1,0 +1,6 @@
+Enterprise Recommendations
+Use the Premium SKU for production environments.
+Disable the Admin User (admin_enabled = false) and authenticate via Managed Identity or Azure RBAC.
+Grant the AKS kubelet identity the AcrPull role so workloads can pull images securely.
+For production, consider disabling public access and using Private Link/Private Endpoints for ACR.
+Configure image retention and vulnerability scanning (for example, with Microsoft Defender for Containers or your DevSecOps tooling) as part of your operational practices.
