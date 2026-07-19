@@ -1,0 +1,4 @@
+Enable RBAC authorization (enable_rbac_authorization = true) instead of legacy access policies.
+Enable soft delete and purge protection to prevent accidental or malicious deletion.
+Do not store production secrets in Terraform state. Provision the Key Vault with Terraform, then populate secrets through Azure DevOps pipelines or Azure CLI using managed identities or service connections.
+Restrict Key Vault access with Azure RBAC and, for production, consider private endpoints and disabling public network access.
