@@ -1,0 +1,25 @@
+React Frontend
+      │
+      ▼
+FastAPI Backend
+      │
+      ▼
+Image Generation Queue
+      │
+      ▼
+Python Worker
+      │
+      ├──────── Azure OpenAI
+      ├──────── Blob Storage
+      └──────── PostgreSQL
+      │
+      ▼
+Notification Topic
+      │
+      ├──────── Email
+      └──────── Webhook
+
+Use the Premium SKU if you need features such as availability zones, predictable performance, or private endpoints.
+Disable local authentication (local_auth_enabled = false) and authenticate applications using Managed Identity with Azure RBAC.
+For production, prefer private endpoints and disable public network access.
+Use queues for asynchronous AI processing jobs and topics/subscriptions when multiple downstream services (for example, notifications, auditing, analytics) need the same event.
