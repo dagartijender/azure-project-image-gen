@@ -1,0 +1,37 @@
+For an enterprise-grade Azure AI Platform, I would refine the Log Analytics module so it is reusable, 
+environment-aware, and integrates cleanly with Azure Monitor and AKS.
+
+This workspace should receive diagnostics from:
+
+AKS
+│
+├── Control Plane Logs
+├── Container Logs
+├── Audit Logs
+├── Metrics
+│
+▼
+Log Analytics Workspace
+│
+├── Azure Monitor
+├── Managed Prometheus
+├── Managed Grafana
+├── Azure Alerts
+├── KQL Queries
+└── Microsoft Sentinel (Optional)
+
+Also configure diagnostic settings from:
+
+AKS
+Azure Front Door
+Application Gateway
+Azure Firewall
+Azure Key Vault
+Azure Storage
+Azure Service Bus
+Azure PostgreSQL
+Azure Container Registry
+Azure AI Services / Azure OpenAI
+Why this design?
+
+Rather than embedding diagnostic settings or Container Insights directly in the Log Analytics module, keep this module focused on creating the workspace. Configure diagnostics and monitoring in separate modules (for example, monitor/ or within the modules for the resources themselves). This makes the workspace reusable across environments and avoids unnecessary coupling between infrastructure components.
