@@ -1,0 +1,39 @@
+                        Internet
+                            │
+                            ▼
+                  Azure Front Door (Global)
+                            │
+                            ▼
+             Azure Application Gateway (WAF_v2)
+                            │
+                     HTTPS / SSL Offload
+                            │
+                            ▼
+                          AKS
+                            │
+                            ▼
+                       kgateway
+                            │
+                            ▼
+                    Istio Service Mesh
+                            │
+         ┌──────────────────┼──────────────────┐
+         ▼                  ▼                  ▼
+     Frontend API       Worker Service     Monitoring
+         │                  │
+         ├──────────────┬───┘
+         ▼              ▼
+ Azure OpenAI     Azure Service Bus
+         │
+         ▼
+ Blob Storage + PostgreSQL
+
+ or an enterprise-grade deployment, consider extending this module with:
+
+User-assigned Managed Identity for Application Gateway.
+Private Frontend IP for internal deployments.
+Private Link between Application Gateway and backend services.
+Key Vault integration using managed identity for certificate retrieval.
+Diagnostic Settings to Azure Monitor and Log Analytics.
+Rewrite rule sets, URL path-based routing, and custom WAF policies.
+End-to-end TLS between Application Gateway and the AKS ingress (kgateway/Istio).
