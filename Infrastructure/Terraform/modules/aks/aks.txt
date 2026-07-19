@@ -1,0 +1,216 @@
+This configuration creates an enterprise-grade AKS cluster with:
+
+System-assigned managed identity
+Azure CNI networking
+Azure Network Policy
+Separate System and User node pools
+Cluster autoscaler enabled
+Azure Policy integration
+Microsoft Defender/OMS integration via Log Analytics
+OIDC issuer and Workload Identity enabled
+Automatic AcrPull role assignment to the AKS kubelet identity
+Production-ready tagging and upgrade configuration
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Resource Declaration
+resource "azurerm_kubernetes_cluster" "this" {
+resource tells Terraform you want to create a resource.
+azurerm_kubernetes_cluster is the AzureRM provider's resource type for AKS.
+"this" is Terraform's local name for this resource. You can reference it elsewhere as:
+azurerm_kubernetes_cluster.this.id
+Basic Configuration
+name                = var.cluster_name
+location            = var.location
+resource_group_name = var.resource_group_name
+
+These are mandatory properties.
+
+Example:
+
+name                = "image-gen-ai"
+location            = "Central India"
+resource_group_name = "rg-image-gen-ai-prod"
+
+Terraform creates an AKS cluster with these values.
+
+DNS Prefix
+dns_prefix = "image-gen-ai"
+
+Azure uses this when generating the Kubernetes API server's DNS name.
+
+Example:
+
+https://image-gen-ai-xxxx.hcp.centralindia.azmk8s.io
+Kubernetes Version
+kubernetes_version = var.kubernetes_version
+
+Specifies which Kubernetes version to deploy.
+
+Example:
+
+1.31
+SKU Tier
+sku_tier = "Standard"
+
+Determines the AKS management tier.
+
+Free: No uptime SLA.
+Standard: Includes an uptime SLA (recommended for production).
+Private Cluster
+private_cluster_enabled = false
+false: API server is publicly reachable (with authentication).
+true: API server is private and accessible only from your virtual network.
+
+Production environments often use true.
+
+Workload Identity
+oidc_issuer_enabled       = true
+workload_identity_enabled = true
+
+These enable Azure Workload Identity, allowing pods to authenticate to Azure services (such as Key Vault or Storage) without storing secrets.
+
+Instead of embedding credentials, a pod can securely obtain an Azure access token.
+
+Kubernetes RBAC
+role_based_access_control_enabled = true
+
+Enables Role-Based Access Control so you can define permissions for users and service accounts.
+
+Disable Local Admin
+local_account_disabled = true
+
+Disables the local Kubernetes admin account.
+
+Users must authenticate through Microsoft Entra ID (Azure AD), which is more secure.
+
+Automatic Upgrades
+automatic_upgrade_channel = "stable"
+
+Allows Azure to automatically upgrade the cluster to stable Kubernetes releases.
+
+Image Cleaner
+image_cleaner_enabled = true
+
+image_cleaner_interval_hours = 48
+
+Automatically removes unused container images from AKS nodes to reclaim disk space.
+
+Azure Policy
+azure_policy_enabled = true
+
+Enables Azure Policy for Kubernetes.
+
+This lets you enforce rules such as:
+
+Only approved container registries.
+No privileged containers.
+Required labels on resources.
+Default Node Pool
+default_node_pool {
+
+Every AKS cluster requires a default node pool.
+
+name = "system"
+
+A dedicated pool for Kubernetes system components.
+
+vm_size = var.system_node_vm_size
+
+Specifies the VM size for nodes.
+
+Example:
+
+Standard_D4s_v5
+node_count = var.system_node_count
+
+Initial number of nodes.
+
+Example:
+
+2
+vnet_subnet_id = var.subnet_id
+
+Places the nodes into your existing VNet subnet instead of creating one automatically.
+
+type = "VirtualMachineScaleSets"
+
+Uses Azure Virtual Machine Scale Sets, which are required for autoscaling and are the recommended deployment model.
+
+auto_scaling_enabled = true
+
+Enables the Cluster Autoscaler.
+
+min_count = 2
+max_count = 5
+
+Allows the node pool to scale between 2 and 5 nodes based on workload.
+
+os_disk_size_gb = 128
+
+Sets the operating system disk size for each node.
+
+only_critical_addons_enabled = true
+
+Restricts this system node pool to Kubernetes system components. Your application workloads should run on separate user node pools.
+
+Managed Identity
+identity {
+  type = "SystemAssigned"
+}
+
+Creates a system-assigned managed identity for the AKS cluster. This identity can be granted permissions to access Azure resources without storing credentials.
+
+Network Profile
+network_profile {
+
+Configures AKS networking.
+
+network_plugin = "azure"
+
+Uses Azure CNI so pods receive IP addresses from your VNet.
+
+network_policy = "azure"
+
+Applies Azure network policies to control pod-to-pod communication.
+
+load_balancer_sku = "standard"
+
+Uses the Standard Azure Load Balancer, which is recommended for production.
+
+outbound_type = "loadBalancer"
+
+Controls how cluster traffic leaves the VNet.
+
+Log Analytics
+oms_agent {
+    log_analytics_workspace_id = var.log_analytics_workspace_id
+}
+
+Connects AKS to an Azure Log Analytics workspace for monitoring, logging, and Azure Monitor integration.
+
+Tags
+tags = merge(
+  {
+    Name        = "image-gen-ai"
+    Environment = var.environment
+    Project     = "Image Generation AI Platform"
+    ManagedBy   = "Terraform"
+  },
+  var.tags
+)
+
+Tags help with:
+
+Cost allocation
+Governance
+Resource organization
+Azure Policy
+Inventory and reporting
+
+For example:
+
+Tag	Value
+Name	image-gen-ai
+Environment	prod
+Project	Image Generation AI Platform
+ManagedBy	Terraform
