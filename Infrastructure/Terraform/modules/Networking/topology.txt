@@ -1,0 +1,13 @@
+Virtual Network (10.0.0.0/16)
+
+├── AKS Subnet
+│      10.0.1.0/24
+│
+├── Application Gateway Subnet
+│      10.0.2.0/24
+│
+├── Azure Bastion Subnet
+│      10.0.3.0/26
+│
+└── Future Expansion
+       10.0.4.0/24
