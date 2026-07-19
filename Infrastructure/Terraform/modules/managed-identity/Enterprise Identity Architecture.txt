@@ -1,0 +1,27 @@
+Enterprise Azure AI Platform, the managed-identity module should provision User Assigned Managed Identities (UAMI) and assign the minimum required Azure RBAC roles for secure access to Azure resources. This enables AKS Workload Identity, eliminating the need to store secrets in pods.
+
+                    User Assigned Managed Identity
+                                   │
+                  ┌────────────────┼────────────────┐
+                  │                │                │
+                  ▼                ▼                ▼
+            Azure Key Vault   Azure Storage   Azure Service Bus
+                  │                │                │
+                  └────────────────┼────────────────┘
+                                   │
+                                   ▼
+                           AKS Workload Identity
+                                   │
+                  ┌────────────────┼────────────────┐
+                  ▼                ▼                ▼
+             FastAPI API       Worker Pods      LangGraph Agents
+                  │                │                │
+                  └────────────────┼────────────────┘
+                                   ▼
+                         Azure OpenAI / AI Foundry
+Production Best Practices
+Use User Assigned Managed Identities (UAMI) instead of service principals wherever possible.
+Enable AKS Workload Identity and federated identity credentials so Kubernetes service accounts can authenticate to Azure resources without secrets.
+Apply least-privilege RBAC (for example, AcrPull, Storage Blob Data Contributor, Key Vault Secrets User, Azure Service Bus Data Sender/Receiver).
+Create separate managed identities for distinct workloads (API, Worker, CI/CD, Application Gateway) to improve security isolation and simplify auditing.
+Store no client secrets or connection strings in application configuration; use managed identities with Azure RBAC to access Azure services securely.
