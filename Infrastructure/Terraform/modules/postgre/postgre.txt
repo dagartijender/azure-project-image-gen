@@ -1,0 +1,9 @@
+Use Azure Database for PostgreSQL Flexible Server.
+Store the administrator password in Azure Key Vault, not in terraform.tfvars.
+For production deployments:
+Disable public network access.
+Use a Private Endpoint.
+Configure Private DNS.
+Enable zone-redundant high availability if required by your availability objectives.
+Increase backup retention (for example, 14–35 days) based on your recovery requirements.
+Grant AKS applications access using secure credentials retrieved from Key Vault or Microsoft Entra authentication where appropriate.
