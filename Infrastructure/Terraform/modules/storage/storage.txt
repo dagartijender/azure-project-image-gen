@@ -1,0 +1,22 @@
+Storage Account
+│
+├── images/
+│      AI Generated Images
+│
+├── uploads/
+│      User Uploaded Images
+│
+├── logs/
+│      Application Logs
+│
+└── backups/
+       (Optional)
+
+Use globally unique storage account names (3–24 lowercase letters and numbers only).
+Use private blob containers unless public access is explicitly required.
+For production, consider:
+Zone-Redundant Storage (ZRS) or Geo-Redundant Storage (GRS) instead of LRS, depending on resilience requirements.
+Private Endpoints and disable public network access.
+Customer-managed keys (CMK) via Azure Key Vault if required.
+Lifecycle management to archive or delete old blobs automatically.
+Authenticate applications with Managed Identity rather than storage account keys or connection strings whenever possible.
