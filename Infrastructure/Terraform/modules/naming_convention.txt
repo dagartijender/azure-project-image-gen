@@ -1,0 +1,15 @@
+| Azure Resource           | Name                   |
+| ------------------------ | ---------------------- |
+| Resource Group           | `rg-image-gen-ai-prod` |
+| AKS Cluster              | `image-gen-ai`         |
+| Azure Container Registry | `acrimagegenai`        |
+| Virtual Network          | `vnet-image-gen-ai`    |
+| AKS Subnet               | `snet-aks`             |
+| Application Gateway      | `agw-image-gen-ai`     |
+| Front Door               | `fd-image-gen-ai`      |
+| Azure Key Vault          | `kv-image-gen-ai`      |
+| PostgreSQL               | `psql-image-gen-ai`    |
+| Storage Account          | `stimagegenai001`      |
+| Service Bus              | `sb-image-gen-ai`      |
+| Log Analytics            | `log-image-gen-ai`     |
+| Managed Identity         | `mi-image-gen-ai`      |
